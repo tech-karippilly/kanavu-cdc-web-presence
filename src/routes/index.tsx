@@ -13,6 +13,7 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import heroImg from "@/assets/hero-therapy.jpg";
 import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
@@ -43,6 +44,29 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+/** Counts from 0 to `to` over `duration` seconds once `start` becomes true */
+function CountUp({ to, suffix = "", duration = 1.8, start }: { to: number; suffix?: string; duration?: number; start: boolean }) {
+  const [display, setDisplay] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.round(eased * to));
+      if (progress < 1) rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [start, to, duration]);
+
+  return <>{display}{suffix}</>;
+}
+
 const tintMap: Record<string, string> = {
   primary: "bg-primary-soft text-primary",
   secondary: "bg-secondary text-secondary-foreground",
@@ -52,6 +76,14 @@ const tintMap: Record<string, string> = {
 };
 
 function HomePage() {
+  const [statsStarted, setStatsStarted] = useState(false);
+
+  // Fire count-up after hero content has animated in (~0.9s delay)
+  useEffect(() => {
+    const t = setTimeout(() => setStatsStarted(true), 900);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <>
       {/* HERO — -mt-16 negates the pt-16 on <main> so image bleeds under fixed header */}
@@ -142,13 +174,15 @@ function HomePage() {
               {/* Trust stats */}
               <motion.div variants={fadeUp} className="mt-12 flex items-center justify-center gap-10">
                 {[
-                  { k: "500+", v: "Children supported" },
-                  { k: "12+", v: "Expert therapists" },
-                  { k: "7 yrs", v: "Trusted care" },
+                  { to: 500, suffix: "+", v: "Children supported" },
+                  { to: 12, suffix: "+", v: "Expert therapists" },
+                  { to: 7, suffix: " yrs", v: "Trusted care" },
                 ].map((s, i) => (
                   <>
                     <div key={s.v} className="text-center">
-                      <p className="font-display text-2xl font-extrabold text-white drop-shadow sm:text-3xl">{s.k}</p>
+                      <p className="font-display text-2xl font-extrabold text-white drop-shadow sm:text-3xl">
+                        <CountUp to={s.to} suffix={s.suffix} start={statsStarted} />
+                      </p>
                       <p className="mt-0.5 text-xs text-white/75">{s.v}</p>
                     </div>
                     {i < 2 && <div className="h-8 w-px bg-white/30" />}
