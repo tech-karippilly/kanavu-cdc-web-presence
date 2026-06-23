@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Calendar, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import serviceSpeech from "@/assets/service-speech.jpg";
 import serviceOt from "@/assets/service-ot.jpg";
 import serviceEdu from "@/assets/service-edu.jpg";
 import aboutFamily from "@/assets/about-family.jpg";
+import { fadeUp, scaleUp, staggerContainer, staggerContainerSlow, viewport } from "@/lib/motion";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -29,17 +31,34 @@ const POSTS = [
 function BlogPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl text-center">
-        <p className="text-sm font-bold uppercase tracking-widest text-primary">Resources</p>
-        <h1 className="mt-3 font-display text-4xl font-extrabold text-foreground sm:text-5xl">Articles for parents</h1>
-        <p className="mt-4 text-lg text-muted-foreground">Evidence-informed insights and practical ideas — straight from our team.</p>
-      </div>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+        className="mx-auto max-w-3xl text-center"
+      >
+        <motion.p variants={fadeUp} className="text-sm font-bold uppercase tracking-widest text-primary">Resources</motion.p>
+        <motion.h1 variants={fadeUp} className="mt-3 font-display text-4xl font-extrabold text-foreground sm:text-5xl">Articles for parents</motion.h1>
+        <motion.p variants={fadeUp} className="mt-4 text-lg text-muted-foreground">Evidence-informed insights and practical ideas — straight from our team.</motion.p>
+      </motion.div>
 
-      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <motion.div
+        variants={staggerContainerSlow}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewport}
+        className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
         {POSTS.map((p, i) => (
-          <article key={i} className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-soft transition-transform hover:-translate-y-1">
+          <motion.article key={i} variants={scaleUp} className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-soft transition-transform hover:-translate-y-1">
             <div className="aspect-[16/10] overflow-hidden">
-              <img src={p.img} alt={p.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <motion.img
+                src={p.img}
+                alt={p.title}
+                className="h-full w-full object-cover"
+                whileHover={{ scale: 1.06 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              />
             </div>
             <div className="flex flex-1 flex-col p-6">
               <div className="flex items-center gap-3 text-xs text-muted-foreground">
@@ -52,9 +71,9 @@ function BlogPage() {
                 Read article <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-          </article>
+          </motion.article>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
