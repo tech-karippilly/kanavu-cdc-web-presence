@@ -24,7 +24,6 @@ import {
   scaleUp,
   staggerContainer,
   staggerContainerSlow,
-  panelSlide,
   floatY,
   heroStagger,
   viewport,
@@ -90,103 +89,73 @@ function HomePage() {
           aria-hidden
         />
 
-        {/* Content wrapper — pushes panel to lower portion */}
-        <div className="relative z-10 flex flex-1 items-end lg:items-center">
-          <div className="mx-auto w-full max-w-7xl px-4 pb-0 pt-28 sm:px-6 lg:px-8 lg:py-28">
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-
-              {/* LEFT: Content panel — overlaps hero bottom */}
-              <motion.div
-                variants={panelSlide}
-                initial="hidden"
-                animate="show"
-                className="relative self-end lg:self-center"
+        {/* Overlay text content — centred over the hero image */}
+        <div className="relative z-10 flex flex-1 items-center">
+          <div className="mx-auto w-full max-w-4xl px-6 pt-28 pb-20 sm:px-8 text-center">
+            <motion.div
+              variants={heroStagger}
+              initial="hidden"
+              animate="show"
+            >
+              <motion.span
+                variants={fadeUp}
+                className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm"
               >
-                {/* Glassmorphic panel */}
-                <div className="rounded-3xl border border-white/20 bg-white/90 p-8 shadow-[0_24px_80px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-10 lg:max-w-xl">
-                  <motion.div
-                    variants={heroStagger}
-                    initial="hidden"
-                    animate="show"
-                  >
-                    <motion.span
-                      variants={fadeUp}
-                      className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary"
-                    >
-                      <Sparkles className="h-3.5 w-3.5" /> Kerala's caring space for children
-                    </motion.span>
+                <Sparkles className="h-3.5 w-3.5" /> Kerala's caring space for children
+              </motion.span>
 
-                    <motion.h1
-                      variants={fadeUp}
-                      className="mt-5 font-display text-4xl font-extrabold leading-[1.08] text-foreground sm:text-5xl"
-                    >
-                      Helping Children{" "}
-                      <span className="text-primary">Reach Their Full Potential</span>
-                    </motion.h1>
+              <motion.h1
+                variants={fadeUp}
+                className="mt-6 font-display text-4xl font-extrabold leading-[1.08] text-white drop-shadow-lg sm:text-5xl lg:text-6xl"
+              >
+                Helping Children{" "}
+                <span className="text-primary-foreground/90 [text-shadow:0_2px_20px_rgba(0,0,0,0.3)]">Reach Their Full Potential</span>
+              </motion.h1>
 
-                    <motion.p
-                      variants={fadeUp}
-                      className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg"
-                    >
-                      Compassionate therapy and developmental care — speech, occupational, behavioural, and educational — in a warm, child-friendly space built for Kerala families.
-                    </motion.p>
+              <motion.p
+                variants={fadeUp}
+                className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/85 drop-shadow sm:text-lg"
+              >
+                Compassionate therapy and developmental care — speech, occupational, behavioural, and educational — in a warm, child-friendly space built for Kerala families.
+              </motion.p>
 
-                    {/* CTA row */}
-                    <motion.div variants={fadeUp} className="mt-7 flex flex-wrap gap-3">
-                      <Link
-                        to="/book-a-visit"
-                        className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-[0_4px_20px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.22)]"
-                      >
-                        <CalendarCheck className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-                        Book a Consultation
-                      </Link>
-                      <a
-                        href={SITE.whatsappHref}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="group inline-flex items-center gap-2 rounded-full border border-success/60 bg-success/10 px-6 py-3 text-sm font-semibold text-success shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:bg-success hover:text-success-foreground hover:shadow-[0_8px_28px_rgba(0,0,0,0.14)]"
-                      >
-                        <MessageCircle className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-                        WhatsApp Us
-                      </a>
-                    </motion.div>
-
-                    {/* Trust stats */}
-                    <motion.div variants={fadeUp} className="mt-8 flex items-center gap-6 border-t border-border pt-6">
-                      {[
-                        { k: "500+", v: "Children supported" },
-                        { k: "12+", v: "Expert therapists" },
-                        { k: "7 yrs", v: "Trusted care" },
-                      ].map((s) => (
-                        <div key={s.v} className="text-center">
-                          <p className="font-display text-xl font-extrabold text-primary sm:text-2xl">{s.k}</p>
-                          <p className="mt-0.5 text-[11px] leading-tight text-muted-foreground">{s.v}</p>
-                        </div>
-                      ))}
-                    </motion.div>
-                  </motion.div>
-                </div>
-
-                {/* Floating badge — anchored to bottom-right of panel */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8, y: 12 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ delay: 0.95, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute -bottom-5 -right-4 hidden rounded-2xl bg-white p-4 shadow-card sm:flex sm:items-center sm:gap-3 lg:-right-8"
+              {/* CTA row */}
+              <motion.div variants={fadeUp} className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link
+                  to="/book-a-visit"
+                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.35)]"
                 >
-                  <div className="grid h-11 w-11 place-items-center rounded-xl bg-success/15 text-success">
-                    <HeartHandshake className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-display text-sm font-bold">Family-first care</p>
-                    <p className="text-xs text-muted-foreground">Personalised for every child</p>
-                  </div>
-                </motion.div>
+                  <CalendarCheck className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                  Book a Consultation
+                </Link>
+                <a
+                  href={SITE.whatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/15 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/25"
+                >
+                  <MessageCircle className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                  WhatsApp Us
+                </a>
               </motion.div>
 
-              {/* RIGHT: empty on desktop (image fills bg), on mobile just spacer */}
-              <div className="hidden lg:block" aria-hidden />
-            </div>
+              {/* Trust stats */}
+              <motion.div variants={fadeUp} className="mt-12 flex items-center justify-center gap-10">
+                {[
+                  { k: "500+", v: "Children supported" },
+                  { k: "12+", v: "Expert therapists" },
+                  { k: "7 yrs", v: "Trusted care" },
+                ].map((s, i) => (
+                  <>
+                    <div key={s.v} className="text-center">
+                      <p className="font-display text-2xl font-extrabold text-white drop-shadow sm:text-3xl">{s.k}</p>
+                      <p className="mt-0.5 text-xs text-white/75">{s.v}</p>
+                    </div>
+                    {i < 2 && <div className="h-8 w-px bg-white/30" />}
+                  </>
+                ))}
+              </motion.div>
+            </motion.div>
           </div>
         </div>
 
