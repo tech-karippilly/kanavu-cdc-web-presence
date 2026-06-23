@@ -55,8 +55,8 @@ const tintMap: Record<string, string> = {
 function HomePage() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative min-h-[90vh] overflow-hidden flex flex-col">
+      {/* HERO — -mt-16 negates the pt-16 on <main> so image bleeds under fixed header */}
+      <section className="relative -mt-16 min-h-[100svh] overflow-hidden flex flex-col">
         {/* Full-bleed background image */}
         <motion.div
           initial={{ scale: 1.06, opacity: 0 }}
