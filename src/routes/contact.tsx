@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send, Sparkles, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 import { SITE } from "@/lib/site";
+import { fadeUp, slideLeft, slideRight, scaleUp, staggerContainer, staggerContainerSlow, viewport } from "@/lib/motion";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -47,22 +49,45 @@ function ContactPage() {
     <>
       <section className="gradient-hero">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary backdrop-blur">
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary backdrop-blur"
+          >
             <Sparkles className="h-3.5 w-3.5" /> Get in Touch
-          </span>
-          <h1 className="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-tight sm:text-5xl">
+          </motion.span>
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            transition={{ delay: 0.1 }}
+            className="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-tight sm:text-5xl"
+          >
             We're here to <span className="text-primary">listen and support.</span>
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          </motion.h1>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            transition={{ delay: 0.2 }}
+            className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+          >
             Send us a message, give us a call, or stop by the centre. Our team usually replies within one working day.
-          </p>
+          </motion.p>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-5">
           {/* Info */}
-          <div className="space-y-4 lg:col-span-2">
+          <motion.div
+            variants={staggerContainerSlow}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="space-y-4 lg:col-span-2"
+          >
             {[
               { icon: Phone, title: "Phone", value: SITE.phone, href: SITE.phoneHref },
               { icon: Mail, title: "Email", value: SITE.email, href: SITE.emailHref },
@@ -85,7 +110,7 @@ function ContactPage() {
                 </span>
               </a>
             ))}
-            <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
+            <motion.div variants={fadeUp} className="rounded-2xl border border-border bg-card p-5 shadow-card">
               <div className="flex items-center gap-3">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
                   <Clock className="h-5 w-5" />
@@ -100,11 +125,19 @@ function ContactPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Form */}
-          <form onSubmit={onSubmit} noValidate className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8 lg:col-span-3">
+          <motion.form
+            variants={slideRight}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            onSubmit={onSubmit}
+            noValidate
+            className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8 lg:col-span-3"
+          >
             <h2 className="font-display text-2xl font-extrabold">Send us a message</h2>
             <p className="mt-1 text-sm text-muted-foreground">Tell us a little about your child and how we can help.</p>
 
@@ -147,11 +180,17 @@ function ContactPage() {
                 <MessageCircle className="h-4 w-4" /> Or message on WhatsApp
               </a>
             </div>
-          </form>
+          </motion.form>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+      <motion.section
+        variants={scaleUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewport}
+        className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8"
+      >
         <div className="overflow-hidden rounded-3xl border border-border shadow-card">
           <iframe
             title="Kanavu CDC location"
@@ -161,7 +200,7 @@ function ContactPage() {
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
-      </section>
+      </motion.section>
     </>
   );
 }

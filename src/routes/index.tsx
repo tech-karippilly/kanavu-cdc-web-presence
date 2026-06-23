@@ -11,9 +11,20 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-therapy.jpg";
 import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
+import {
+  fadeUp,
+  fadeIn,
+  slideLeft,
+  slideRight,
+  scaleUp,
+  staggerContainer,
+  staggerContainerSlow,
+  viewport,
+} from "@/lib/motion";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,17 +54,21 @@ function HomePage() {
       {/* HERO */}
       <section className="gradient-hero relative overflow-hidden">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 md:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-          <div className="animate-fade-in">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary backdrop-blur">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.span variants={fadeUp} className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary backdrop-blur">
               <Sparkles className="h-3.5 w-3.5" /> Kerala's caring space for children
-            </span>
-            <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl lg:text-6xl">
+            </motion.span>
+            <motion.h1 variants={fadeUp} className="mt-5 font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl lg:text-6xl">
               Helping Children Reach Their <span className="text-primary">Full Potential</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            </motion.h1>
+            <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               At Kanavu Child Development Centre, our compassionate team of therapists and educators walks alongside families to support every child's unique developmental journey — through play, patience, and proven care.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            </motion.p>
+            <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
@@ -68,8 +83,8 @@ function HomePage() {
               >
                 <MessageCircle className="h-4 w-4" /> WhatsApp Us
               </a>
-            </div>
-            <dl className="mt-10 grid grid-cols-3 gap-4 max-w-md">
+            </motion.div>
+            <motion.dl variants={fadeUp} className="mt-10 grid grid-cols-3 gap-4 max-w-md">
               {[
                 { k: "500+", v: "Children supported" },
                 { k: "12+", v: "Expert therapists" },
@@ -80,10 +95,15 @@ function HomePage() {
                   <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.v}</dd>
                 </div>
               ))}
-            </dl>
-          </div>
+            </motion.dl>
+          </motion.div>
 
-          <div className="relative">
+          <motion.div
+            variants={slideRight}
+            initial="hidden"
+            animate="show"
+            className="relative"
+          >
             <div className="absolute -inset-4 rounded-[2rem] bg-white/40 blur-2xl" aria-hidden />
             <img
               src={heroImg}
@@ -92,7 +112,12 @@ function HomePage() {
               height={1152}
               className="relative aspect-[4/3] w-full rounded-[2rem] object-cover shadow-soft"
             />
-            <div className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white p-4 shadow-card sm:flex sm:items-center sm:gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: 0.7, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white p-4 shadow-card sm:flex sm:items-center sm:gap-3"
+            >
               <div className="grid h-12 w-12 place-items-center rounded-xl bg-success/15 text-success">
                 <HeartHandshake className="h-6 w-6" />
               </div>
@@ -100,25 +125,43 @@ function HomePage() {
                 <p className="font-display text-sm font-bold">Family-first care</p>
                 <p className="text-xs text-muted-foreground">Personalized for every child</p>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* INTRO */}
       <section className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
-        <h2 className="font-display text-3xl font-extrabold sm:text-4xl">
+        <motion.h2
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          className="font-display text-3xl font-extrabold sm:text-4xl"
+        >
           Every child has a dream. <span className="text-primary">We help them live it.</span>
-        </h2>
-        <p className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+        </motion.h2>
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          className="mx-auto mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+        >
           Kanavu — meaning "dream" in Malayalam — is built on the belief that with the right support, every child can flourish. Our multidisciplinary team combines speech, occupational, behavioral, and educational therapy in a warm, child-friendly space designed just for them.
-        </p>
+        </motion.p>
       </section>
 
       {/* SERVICES */}
       <section className="gradient-soft py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end"
+          >
             <div>
               <p className="text-sm font-bold uppercase tracking-wider text-primary">What we offer</p>
               <h2 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Therapy services tailored to your child</h2>
@@ -126,71 +169,101 @@ function HomePage() {
             <Link to="/services" className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
               View all services <ArrowRight className="h-4 w-4" />
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          >
             {SERVICES.map((s) => {
               const Icon = s.icon;
               return (
-                <Link
-                  key={s.slug}
-                  to="/services"
-                  hash={s.slug}
-                  className="group rounded-3xl border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:border-primary/30"
-                >
-                  <div className={`grid h-14 w-14 place-items-center rounded-2xl ${tintMap[s.tint]}`}>
-                    <Icon className="h-7 w-7" />
-                  </div>
-                  <h3 className="mt-5 font-display text-xl font-bold">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.short}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                    Learn more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
+                <motion.div key={s.slug} variants={scaleUp}>
+                  <Link
+                    to="/services"
+                    hash={s.slug}
+                    className="group flex flex-col rounded-3xl border border-border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:border-primary/30 h-full"
+                  >
+                    <div className={`grid h-14 w-14 place-items-center rounded-2xl ${tintMap[s.tint]}`}>
+                      <Icon className="h-7 w-7" />
+                    </div>
+                    <h3 className="mt-5 font-display text-xl font-bold">{s.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.short}</p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary">
+                      Learn more <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </Link>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* WHY CHOOSE US */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
+          <motion.div
+            variants={slideLeft}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+          >
             <p className="text-sm font-bold uppercase tracking-wider text-primary">Why families choose Kanavu</p>
             <h2 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">A place where children feel safe, seen, and celebrated.</h2>
             <p className="mt-5 text-base leading-relaxed text-muted-foreground">
               We believe therapy works best when children look forward to it. That's why every session at Kanavu is built around connection, play, and measurable progress — with parents as our most trusted partners.
             </p>
-          </div>
-          <ul className="grid gap-4 sm:grid-cols-2">
+          </motion.div>
+          <motion.ul
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="grid gap-4 sm:grid-cols-2"
+          >
             {[
               { icon: ShieldCheck, title: "Certified specialists", desc: "Licensed therapists with deep pediatric expertise." },
               { icon: HeartHandshake, title: "Individualized plans", desc: "Goals shaped around your child, not a template." },
               { icon: Users, title: "Family partnership", desc: "Parents are involved in every step of the journey." },
               { icon: Sparkles, title: "Joyful environment", desc: "A bright, sensory-friendly space made for kids." },
             ].map(({ icon: Icon, title, desc }) => (
-              <li key={title} className="rounded-2xl border border-border bg-card p-5 shadow-card">
+              <motion.li key={title} variants={fadeUp} className="rounded-2xl border border-border bg-card p-5 shadow-card">
                 <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                   <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="mt-4 font-display text-base font-bold">{title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
         </div>
       </section>
 
       {/* TESTIMONIALS */}
       <section className="bg-primary-soft/50 py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="text-center"
+          >
             <p className="text-sm font-bold uppercase tracking-wider text-primary">Parent stories</p>
             <h2 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Real progress, in their own words</h2>
-          </div>
+          </motion.div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <motion.div
+            variants={staggerContainerSlow}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="mt-10 grid gap-5 md:grid-cols-3"
+          >
             {[
               {
                 quote: "Within six months at Kanavu, our son started using full sentences. The therapists make him feel like he's just playing — but he's learning so much.",
@@ -208,7 +281,7 @@ function HomePage() {
                 role: "Father of Niranjan, age 4",
               },
             ].map((t) => (
-              <figure key={t.name} className="rounded-3xl bg-card p-6 shadow-card">
+              <motion.figure key={t.name} variants={fadeUp} className="rounded-3xl bg-card p-6 shadow-card">
                 <div className="flex gap-1 text-warm">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} className="h-4 w-4 fill-current" />
@@ -219,16 +292,21 @@ function HomePage() {
                   <p className="font-display text-sm font-bold">{t.name}</p>
                   <p className="text-xs text-muted-foreground">{t.role}</p>
                 </figcaption>
-              </figure>
+              </motion.figure>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CONTACT / MAP */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2">
-          <div>
+          <motion.div
+            variants={slideLeft}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+          >
             <p className="text-sm font-bold uppercase tracking-wider text-primary">Visit us</p>
             <h2 className="mt-2 font-display text-3xl font-extrabold sm:text-4xl">We'd love to meet your family</h2>
             <p className="mt-4 text-base text-muted-foreground">Drop by our centre, give us a call, or send a quick WhatsApp message — whichever feels easiest.</p>
@@ -251,8 +329,14 @@ function HomePage() {
                 </div>
               </li>
             </ul>
-          </div>
-          <div className="overflow-hidden rounded-3xl border border-border shadow-card">
+          </motion.div>
+          <motion.div
+            variants={slideRight}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewport}
+            className="overflow-hidden rounded-3xl border border-border shadow-card"
+          >
             <iframe
               title="Kanavu CDC location map"
               src={SITE.mapEmbed}
@@ -260,7 +344,7 @@ function HomePage() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
     </>
