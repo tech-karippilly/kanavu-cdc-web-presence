@@ -7,6 +7,9 @@ const nav = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
+  { to: "/team", label: "Team" },
+  { to: "/blog", label: "Resources" },
+  { to: "/faq", label: "FAQ" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -37,14 +40,12 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <a
-            href={SITE.whatsappHref}
-            target="_blank"
-            rel="noreferrer"
+          <Link
+            to="/book-a-visit"
             className="ml-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
           >
             Book a Visit
-          </a>
+          </Link>
         </nav>
 
         <button
@@ -71,14 +72,13 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <a
-              href={SITE.whatsappHref}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/book-a-visit"
+              onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
             >
-              WhatsApp Us
-            </a>
+              Book a Visit
+            </Link>
           </div>
         </div>
       )}
