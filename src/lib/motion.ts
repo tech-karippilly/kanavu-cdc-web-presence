@@ -51,3 +51,23 @@ export const menuSlide: Variants = {
 
 /** Common viewport config for scroll-triggered animations */
 export const viewport = { once: true, margin: "-80px" } as const;
+
+/** Hero content panel — slides up from below on load */
+export const panelSlide: Variants = {
+  hidden: { opacity: 0, y: 48 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/** Floating / breathing loop for decorative background elements */
+export const floatY: Variants = {
+  show: {
+    y: [0, -12, 0],
+    transition: { duration: 6, ease: "easeInOut", repeat: Infinity, repeatType: "loop" },
+  },
+};
+
+/** Stagger container with faster stagger for hero items */
+export const heroStagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
