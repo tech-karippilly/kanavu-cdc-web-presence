@@ -24,6 +24,11 @@ export function Footer() {
             <li><Link to="/" className="hover:text-primary">Home</Link></li>
             <li><Link to="/about" className="hover:text-primary">About Us</Link></li>
             <li><Link to="/services" className="hover:text-primary">Services</Link></li>
+            <li><Link to="/team" className="hover:text-primary">Our Team</Link></li>
+            <li><Link to="/gallery" className="hover:text-primary">Gallery</Link></li>
+            <li><Link to="/blog" className="hover:text-primary">Resources</Link></li>
+            <li><Link to="/faq" className="hover:text-primary">FAQs</Link></li>
+            <li><Link to="/book-a-visit" className="hover:text-primary">Book a Visit</Link></li>
             <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
           </ul>
         </div>
