@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { SITE } from "@/lib/site";
+import { menuSlide, staggerContainer, fadeUp } from "@/lib/motion";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -57,31 +59,48 @@ export function Header() {
         </button>
       </div>
 
-      {open && (
-        <div className="border-t border-border bg-background md:hidden">
-          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
-            {nav.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                onClick={() => setOpen(false)}
-                activeOptions={{ exact: item.to === "/" }}
-                className="rounded-xl px-4 py-3 text-base font-semibold text-foreground hover:bg-primary-soft"
-                activeProps={{ className: "rounded-xl px-4 py-3 text-base font-semibold bg-primary-soft text-primary" }}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link
-              to="/book-a-visit"
-              onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="mobile-menu"
+            variants={menuSlide}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            className="border-t border-border bg-background md:hidden overflow-hidden"
+          >
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+              className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3"
             >
-              Book a Visit
-            </Link>
-          </div>
-        </div>
-      )}
+              {nav.map((item) => (
+                <motion.div key={item.to} variants={fadeUp}>
+                  <Link
+                    to={item.to}
+                    onClick={() => setOpen(false)}
+                    activeOptions={{ exact: item.to === "/" }}
+                    className="block rounded-xl px-4 py-3 text-base font-semibold text-foreground hover:bg-primary-soft"
+                    activeProps={{ className: "block rounded-xl px-4 py-3 text-base font-semibold bg-primary-soft text-primary" }}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div variants={fadeUp}>
+                <Link
+                  to="/book-a-visit"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground w-full"
+                >
+                  Book a Visit
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer, staggerContainerSlow, viewport } from "@/lib/motion";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
@@ -27,20 +29,34 @@ const FAQS = [
 function FaqPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="text-center">
-        <p className="text-sm font-bold uppercase tracking-widest text-primary">FAQs</p>
-        <h1 className="mt-3 font-display text-4xl font-extrabold text-foreground sm:text-5xl">Questions, answered</h1>
-        <p className="mt-4 text-lg text-muted-foreground">If you don't find what you're looking for, just call or WhatsApp us — we love a good chat.</p>
-      </div>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+        className="text-center"
+      >
+        <motion.p variants={fadeUp} className="text-sm font-bold uppercase tracking-widest text-primary">FAQs</motion.p>
+        <motion.h1 variants={fadeUp} className="mt-3 font-display text-4xl font-extrabold text-foreground sm:text-5xl">Questions, answered</motion.h1>
+        <motion.p variants={fadeUp} className="mt-4 text-lg text-muted-foreground">If you don't find what you're looking for, just call or WhatsApp us — we love a good chat.</motion.p>
+      </motion.div>
 
-      <Accordion type="single" collapsible className="mt-12 space-y-3">
-        {FAQS.map((f, i) => (
-          <AccordionItem key={i} value={`item-${i}`} className="rounded-2xl border border-border bg-card px-5 shadow-soft">
-            <AccordionTrigger className="text-left font-semibold text-foreground hover:no-underline">{f.q}</AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <motion.div
+        variants={staggerContainerSlow}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewport}
+      >
+        <Accordion type="single" collapsible className="mt-12 space-y-3">
+          {FAQS.map((f, i) => (
+            <motion.div key={i} variants={fadeUp}>
+              <AccordionItem value={`item-${i}`} className="rounded-2xl border border-border bg-card px-5 shadow-soft">
+                <AccordionTrigger className="text-left font-semibold text-foreground hover:no-underline">{f.q}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+              </AccordionItem>
+            </motion.div>
+          ))}
+        </Accordion>
+      </motion.div>
     </div>
   );
 }
