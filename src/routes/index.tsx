@@ -10,8 +10,10 @@ import {
   Star,
   MapPin,
   Clock,
+  CalendarCheck,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import heroImg from "@/assets/hero-therapy.jpg";
 import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
@@ -23,6 +25,8 @@ import {
   scaleUp,
   staggerContainer,
   staggerContainerSlow,
+  floatY,
+  heroStagger,
   viewport,
 } from "@/lib/motion";
 
@@ -40,6 +44,29 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+/** Counts from 0 to `to` over `duration` seconds once `start` becomes true */
+function CountUp({ to, suffix = "", duration = 1.8, start }: { to: number; suffix?: string; duration?: number; start: boolean }) {
+  const [display, setDisplay] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.round(eased * to));
+      if (progress < 1) rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [start, to, duration]);
+
+  return <>{display}{suffix}</>;
+}
+
 const tintMap: Record<string, string> = {
   primary: "bg-primary-soft text-primary",
   secondary: "bg-secondary text-secondary-foreground",
@@ -49,85 +76,125 @@ const tintMap: Record<string, string> = {
 };
 
 function HomePage() {
+  const [statsStarted, setStatsStarted] = useState(false);
+
+  // Fire count-up after hero content has animated in (~0.9s delay)
+  useEffect(() => {
+    const t = setTimeout(() => setStatsStarted(true), 900);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <>
-      {/* HERO */}
-      <section className="gradient-hero relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 md:py-20 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-          >
-            <motion.span variants={fadeUp} className="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5" /> Kerala's caring space for children
-            </motion.span>
-            <motion.h1 variants={fadeUp} className="mt-5 font-display text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl lg:text-6xl">
-              Helping Children Reach Their <span className="text-primary">Full Potential</span>
-            </motion.h1>
-            <motion.p variants={fadeUp} className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              At Kanavu Child Development Centre, our compassionate team of therapists and educators walks alongside families to support every child's unique developmental journey — through play, patience, and proven care.
-            </motion.p>
-            <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]"
-              >
-                <Phone className="h-4 w-4" /> Contact Us
-              </Link>
-              <a
-                href={SITE.whatsappHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-success px-6 py-3 text-sm font-semibold text-success-foreground shadow-soft transition-transform hover:scale-[1.02]"
-              >
-                <MessageCircle className="h-4 w-4" /> WhatsApp Us
-              </a>
-            </motion.div>
-            <motion.dl variants={fadeUp} className="mt-10 grid grid-cols-3 gap-4 max-w-md">
-              {[
-                { k: "500+", v: "Children supported" },
-                { k: "12+", v: "Expert therapists" },
-                { k: "7", v: "Years of care" },
-              ].map((s) => (
-                <div key={s.v}>
-                  <dt className="font-display text-2xl font-extrabold text-primary sm:text-3xl">{s.k}</dt>
-                  <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.v}</dd>
-                </div>
-              ))}
-            </motion.dl>
-          </motion.div>
+      {/* HERO — -mt-16 negates the pt-16 on <main> so image bleeds under fixed header */}
+      <section className="relative -mt-16 min-h-[100svh] overflow-hidden flex flex-col">
+        {/* Full-bleed background image */}
+        <motion.div
+          initial={{ scale: 1.06, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 z-0"
+        >
+          <img
+            src={heroImg}
+            alt=""
+            aria-hidden
+            className="h-full w-full object-cover object-center"
+          />
+          {/* Gradient overlay — darker at bottom-left where panel sits */}
+          <div className="absolute inset-0 bg-gradient-to-br from-foreground/70 via-foreground/40 to-foreground/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+        </motion.div>
 
-          <motion.div
-            variants={slideRight}
-            initial="hidden"
-            animate="show"
-            className="relative"
-          >
-            <div className="absolute -inset-4 rounded-[2rem] bg-white/40 blur-2xl" aria-hidden />
-            <img
-              src={heroImg}
-              alt="A therapist playing with a happy young child using educational toys"
-              width={1536}
-              height={1152}
-              className="relative aspect-[4/3] w-full rounded-[2rem] object-cover shadow-soft"
-            />
+        {/* Decorative floating orbs */}
+        <motion.div
+          variants={floatY}
+          animate="show"
+          className="absolute right-[8%] top-[12%] z-0 h-64 w-64 rounded-full bg-primary/20 blur-3xl"
+          aria-hidden
+        />
+        <motion.div
+          variants={floatY}
+          animate="show"
+          style={{ animationDelay: "2s" }}
+          className="absolute left-[5%] bottom-[20%] z-0 h-48 w-48 rounded-full bg-secondary/30 blur-3xl"
+          aria-hidden
+        />
+
+        {/* Overlay text content — centred over the hero image */}
+        <div className="relative z-10 flex flex-1 items-center">
+          <div className="mx-auto w-full max-w-4xl px-6 pt-28 pb-20 sm:px-8 text-center">
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.7, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute -bottom-5 -left-5 hidden rounded-2xl bg-white p-4 shadow-card sm:flex sm:items-center sm:gap-3"
+              variants={heroStagger}
+              initial="hidden"
+              animate="show"
             >
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-success/15 text-success">
-                <HeartHandshake className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="font-display text-sm font-bold">Family-first care</p>
-                <p className="text-xs text-muted-foreground">Personalized for every child</p>
-              </div>
+              <motion.span
+                variants={fadeUp}
+                className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white backdrop-blur-sm"
+              >
+                <Sparkles className="h-3.5 w-3.5" /> Kerala's caring space for children
+              </motion.span>
+
+              <motion.h1
+                variants={fadeUp}
+                className="mt-6 font-display text-4xl font-extrabold leading-[1.08] text-white drop-shadow-lg sm:text-5xl lg:text-6xl"
+              >
+                Helping Children{" "}
+                <span className="text-primary-foreground/90 [text-shadow:0_2px_20px_rgba(0,0,0,0.3)]">Reach Their Full Potential</span>
+              </motion.h1>
+
+              <motion.p
+                variants={fadeUp}
+                className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/85 drop-shadow sm:text-lg"
+              >
+                Compassionate therapy and developmental care — speech, occupational, behavioural, and educational — in a warm, child-friendly space built for Kerala families.
+              </motion.p>
+
+              {/* CTA row */}
+              <motion.div variants={fadeUp} className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link
+                  to="/book-a-visit"
+                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.35)]"
+                >
+                  <CalendarCheck className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                  Book a Consultation
+                </Link>
+                <a
+                  href={SITE.whatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/15 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/25"
+                >
+                  <MessageCircle className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                  WhatsApp Us
+                </a>
+              </motion.div>
+
+              {/* Trust stats */}
+              <motion.div variants={fadeUp} className="mt-12 flex items-center justify-center gap-10">
+                {[
+                  { to: 500, suffix: "+", v: "Children supported" },
+                  { to: 12, suffix: "+", v: "Expert therapists" },
+                  { to: 7, suffix: " yrs", v: "Trusted care" },
+                ].map((s, i) => (
+                  <>
+                    <div key={s.v} className="text-center">
+                      <p className="font-display text-2xl font-extrabold text-white drop-shadow sm:text-3xl">
+                        <CountUp to={s.to} suffix={s.suffix} start={statsStarted} />
+                      </p>
+                      <p className="mt-0.5 text-xs text-white/75">{s.v}</p>
+                    </div>
+                    {i < 2 && <div className="h-8 w-px bg-white/30" />}
+                  </>
+                ))}
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
+
+        {/* Bottom fade into page background */}
+        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" aria-hidden />
       </section>
 
       {/* INTRO */}
