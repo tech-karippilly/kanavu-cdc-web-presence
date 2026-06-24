@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Phone, Mail, MapPin, Sparkles } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 // Brand SVG icons
@@ -39,10 +39,11 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-primary-foreground">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <span className="font-display text-lg font-extrabold">Kanavu CDC</span>
+            <img
+              src="/kanavu-02.svg"
+              alt="Kanavu Child Development Centre"
+              className="h-10 w-auto rounded-xl"
+            />
           </div>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
             A nurturing space in the heart of Kerala where children grow with confidence — through evidence-based therapy, play, and family partnership.
