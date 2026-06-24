@@ -40,7 +40,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <img
-              src="/kanavu-02.svg"
+              src="/kanavu-01.png"
               alt="Kanavu Child Development Centre"
               className="h-10 w-auto rounded-xl"
             />
