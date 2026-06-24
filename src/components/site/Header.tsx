@@ -43,7 +43,7 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src="/kanavu-02.svg"
+            src="/kanavu-01.png"
             alt="Kanavu Child Development Centre"
             className="h-10 w-auto rounded-xl shadow-soft"
           />
