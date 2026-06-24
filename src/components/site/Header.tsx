@@ -1,6 +1,6 @@
 import { Link, useMatchRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SITE } from "@/lib/site";
 import { menuSlide, staggerContainer, fadeUp } from "@/lib/motion";
@@ -42,13 +42,11 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-soft">
-            <Sparkles className="h-5 w-5" />
-          </span>
-          <span className="flex flex-col leading-tight">
-            <span className={`font-display text-base font-extrabold transition-colors duration-300 ${transparent ? "text-white" : "text-foreground"}`}>Kanavu</span>
-            <span className={`text-[11px] font-semibold uppercase tracking-wider transition-colors duration-300 ${transparent ? "text-white/80" : "text-muted-foreground"}`}>Child Development Centre</span>
-          </span>
+          <img
+            src="/kanavu-02.svg"
+            alt="Kanavu Child Development Centre"
+            className="h-10 w-auto rounded-xl shadow-soft"
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
