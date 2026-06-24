@@ -45,7 +45,7 @@ export function Header() {
           <img
             src="/kanavu-01.png"
             alt="Kanavu Child Development Centre"
-            className="h-10 w-auto rounded-xl shadow-soft"
+            className="h-14 w-auto rounded-xl shadow-soft"
           />
         </Link>
 
