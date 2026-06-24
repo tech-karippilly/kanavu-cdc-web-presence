@@ -42,7 +42,7 @@ export function Footer() {
             <img
               src="/kanavu-01.png"
               alt="Kanavu Child Development Centre"
-              className="h-10 w-auto rounded-xl"
+              className="h-12 w-auto rounded-xl"
             />
           </div>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
